@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Kampus Solusi Input</title>
+  <style>
+    body {
+      background-color: #ff00ff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      background-color: yellow;
+      padding: 10px;
+      text-align: center;
+      font-size: 28px;
+      margin-top: 0;
+      font-weight: bold;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+    label {
+      font-weight: bold;
+      background: lime;
+      padding: 5px;
+    }
+    input, select {
+      padding: 10px;
+      font-size: 16px;
+      width: 100%;
+    }
+    .button-wrap {
+      grid-column: span 4;
+      text-align: center;
+      margin-top: 20px;
+    }
+    button {
+      background: lightgray;
+      font-size: 24px;
+      padding: 10px 40px;
+      font-weight: bold;
+      border: 2px solid black;
+      cursor: pointer;
+    }
+    table {
+      margin-top: 40px;
+      width: 100%;
+      background: white;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background: #ccc;
+    }
+    @media screen and (max-width: 768px) {
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      th, td {
+        font-size: 14px;
+        padding: 6px;
+      }
+    }
+    #popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border: 3px solid black;
+      padding: 20px;
+      z-index: 999;
+      display: none;
+      max-width: 90%;
+      font-size: 18px;
+      text-align: left;
+      line-height: 1.6;
+    }
+    #popup.show {
+      display: block;
+    }
+    #popup-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      z-index: 998;
+    }
+    #popup-overlay.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>KAMPUS SOLUSI</h1>
+  <div class="form-grid">
+    <label for="nomor">NOMOR</label>
+    <input id="nomor" name="nomor" placeholder="Isi Nomor" type="text"/>
+    <label for="jumlahDiskusi">JUMLAH DISKUSI</label>
+    <select id="jumlahDiskusi" name="jumlahDiskusi">
+      <option value="">Pilih</option>
+      <option value="PAKET 6 MK">PAKET 6 MK</option>
+      <option value="PAKET 7 MK">PAKET 7 MK</option>
+      <option value="PAKET 8 MK">PAKET 8 MK</option>
+      <option value="1 MK">1 MK</option>
+      <option value="2 MK">2 MK</option>
+      <option value="3 MK">3 MK</option>
+      <option value="4 MK">4 MK</option>
+      <option value="5 MK">5 MK</option>
+      <option value="9 MK">9 MK</option>
+      <option value="LEBIH 10 MK">LEBIH 10 MK</option>
+    </select>
+    <label for="jam">JAM</label>
+    <input id="jam" name="jam" readonly="" type="text"/>
+    <label for="jumlahTugas">JUMLAH TUGAS</label>
+    <select id="jumlahTugas" name="jumlahTugas">
+      <option value="">Pilih</option>
+      <option value="PAKET 6">PAKET 6</option>
+      <option value="PAKET 7 MK">PAKET 7 MK</option>
+      <option value="PAKET 8 MK">PAKET 8 MK</option>
+      <option value="1 MK">1 MK</option>
+      <option value="2 MK">2 MK</option>
+      <option value="3 MK">3 MK</option>
+      <option value="4 MK">4 MK</option>
+      <option value="5 MK">5 MK</option>
+      <option value="9 MK">9 MK</option>
+      <option value="LEBIH 10 MK">LEBIH 10 MK</option>
+    </select>
+    <label for="diskusi">DISKUSI</label>
+    <select id="diskusi" name="diskusi">
+      <option value="">Pilih Diskusi</option>
+      <option value="DISKUSI 1">DISKUSI 1</option>
+      <option value="DISKUSI 2">DISKUSI 2</option>
+      <option value="DISKUSI 3">DISKUSI 3</option>
+      <option value="DISKUSI 4">DISKUSI 4</option>
+      <option value="DISKUSI 5">DISKUSI 5</option>
+      <option value="DISKUSI 6">DISKUSI 6</option>
+      <option value="DISKUSI 7">DISKUSI 7</option>
+      <option value="DISKUSI 8">DISKUSI 8</option>
+    </select>
+    <label for="tugas">TUGAS</label>
+    <select id="tugas" name="tugas">
+      <option value="">Pilih Tugas</option>
+      <option value="TUGAS TUTON 1">TUGAS TUTON 1</option>
+      <option value="TUGAS TUTON 2">TUGAS TUTON 2</option>
+      <option value="TUGAS TUTON 3">TUGAS TUTON 3</option>
+      <option value="TUGAS TMK">TUGAS TMK</option>
+    </select>
+    <div class="button-wrap">
+      <button onclick="submitForm()">INPUT</button>
+    </div>
+  </div>
+
+  <table id="spreadsheetTable">
+    <thead>
+      <tr>
+        <th>STATUS</th><th>NO</th><th>AKUN</th><th>JAM</th><th>SOAL</th><th>SOAL 2</th><th>DISKUSI</th><th>TUGAS</th><th>HARGA</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div id="popup-overlay"></div>
+  <div id="popup"><button onclick="copyStruk()" style="margin-top:10px; padding:8px 16px;">Copy Struk</button></div>
+
+  <script>
+    function updateJam() {
+      const now = new Date();
+      const bulan = ["JANUARI","FEBRUARI","MARET","APRIL","MEI","JUNI","JULI","AGUSTUS","SEPTEMBER","OKTOBER","NOVEMBER","DESEMBER"];
+      const jamFormatted = now.getDate() + " " + bulan[now.getMonth()] + " " + now.getFullYear() + ", " +
+                          now.getHours().toString().padStart(2, '0') + ":" +
+                          now.getMinutes().toString().padStart(2, '0');
+      document.getElementById("jam").value = jamFormatted;
+    }
+
+    function submitForm() {
+      const formData = new URLSearchParams();
+      formData.append("nomor", document.getElementById("nomor").value);
+      formData.append("jam", document.getElementById("jam").value);
+      formData.append("diskusi", document.getElementById("diskusi").value);
+      formData.append("tugas", document.getElementById("tugas").value);
+      formData.append("jumlahDiskusi", document.getElementById("jumlahDiskusi").value);
+      formData.append("jumlahTugas", document.getElementById("jumlahTugas").value);
+
+      fetch("https://script.google.com/macros/s/AKfycbyIr4dR8Ipjb3biyvdK1yZ1k3r5P1HotCvn2_VYXHF1CVngbJ9CvdAl3d2kZdFc06ex/exec", {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.text())
+      .then(msg => {
+        showPopup();
+        clearForm(); // Tambahkan fungsi clear setelah popup muncul
+        loadTable();
+      })
+      .catch(() => alert("Gagal mengirim data"));
+    }
+
+    function clearForm() {
+      document.getElementById("nomor").value = "";
+      document.getElementById("jumlahDiskusi").selectedIndex = 0;
+      document.getElementById("jumlahTugas").selectedIndex = 0;
+      document.getElementById("diskusi").selectedIndex = 0;
+      document.getElementById("tugas").selectedIndex = 0;
+    }
+
+    function loadTable() {
+  fetch("https://script.google.com/macros/s/AKfycbyIr4dR8Ipjb3biyvdK1yZ1k3r5P1HotCvn2_VYXHF1CVngbJ9CvdAl3d2kZdFc06ex/exec")
+    .then(res => res.json())
+    .then(data => {
+      const tableBody = document.querySelector("#spreadsheetTable tbody");
+      tableBody.innerHTML = "";
+      const bulan = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+      
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+
+        const rowFormatted = row.map((cell, i) => {
+          if (i === 3 && cell) { // index 3 untuk kolom JAM
+            const d = new Date(cell);
+            const tanggal = d.getDate();
+            const bulanNama = bulan[d.getMonth()];
+            const tahun = d.getFullYear();
+            const jam = d.getHours().toString().padStart(2, '0');
+            const menit = d.getMinutes().toString().padStart(2, '0');
+            
+            // Ubah waktu UTC menjadi waktu lokal (WIB)
+            const localDate = new Date(d.getTime() + 7 * 60 * 60 * 1000); // tambah 7 jam
+            const jamWIB = localDate.getHours().toString().padStart(2, '0');
+            const menitWIB = localDate.getMinutes().toString().padStart(2, '0');
+
+            return `<td>${tanggal} ${bulanNama} ${tahun}, ${jamWIB}:${menitWIB}</td>`;
+          }
+          return `<td>${cell}</td>`;
+        }).join("");
+
+        tr.innerHTML = rowFormatted;
+        tableBody.appendChild(tr);
+      });
+    });
+}
+
+
+    function showPopup() {
+      const nomor = document.getElementById("nomor").value;
+      const jam = document.getElementById("jam").value;
+      const diskusi = document.getElementById("diskusi").value;
+      const tugas = document.getElementById("tugas").value;
+      const jumlah = document.getElementById("jumlahDiskusi").value;
+      const jumlahTugas = document.getElementById("jumlahTugas").value;
+      const popup = document.getElementById("popup");
+      const overlay = document.getElementById("popup-overlay");
+
+      popup.innerHTML = `
+        <strong>*DETAIL TRANSAKSI*</strong><br>
+        <b>*KODE* :</b> ${nomor}<br>
+        
+        <b>*TANGGAL*:</b> ${jam}<br>
+        <b>*JENIS SOAL*:</b><br>
+        1. ${diskusi}<br>
+        2. ${tugas}<br>
+        <b>*JUMLAH* :</b><br>
+        1. ${jumlah}<br>
+        2. ${jumlahTugas}<br>
+        <center><b>D I  P R O S E S 「 ⏳ 」</b></center>
+        
+        ⬇⚠FOLLOW Biar tidak ketinggalan antrian order ⬇⚠<br>
+        > SALURAN WHATSAPP<br>
+        > https://whatsapp.com/channel/0029Vae3k0c4Y9lhLax5xU3c
+        <br><button onclick="copyStruk()" style="margin-top:10px; padding:8px 16px;">Copy Struk</button>
+      `;
+
+      popup.classList.add("show");
+      overlay.classList.add("show");
+      overlay.onclick = () => {
+        popup.classList.remove("show");
+        overlay.classList.remove("show");
+      };
+    }
+
+    function copyStruk() {
+  const popupElement = document.getElementById("popup");
+
+  // Ambil teks tanpa HTML
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = popupElement.innerHTML;
+  const textToCopy = tempDiv.innerText;
+
+  // Buat textarea sementara (lebih aman di mobile)
+  const tempTextArea = document.createElement("textarea");
+  tempTextArea.value = textToCopy;
+  tempTextArea.setAttribute("readonly", "");
+  tempTextArea.style.position = "absolute";
+  tempTextArea.style.left = "-9999px";
+  document.body.appendChild(tempTextArea);
+  tempTextArea.select();
+
+  try {
+    const successful = document.execCommand('copy');
+    if (successful) {
+      alert("Struk berhasil dicopy ke clipboard!");
+    } else {
+      alert("Gagal menyalin struk. Silakan salin manual.");
+    }
+  } catch (err) {
+    alert("Clipboard tidak didukung di perangkat ini.");
+  }
+
+  document.body.removeChild(tempTextArea);
+}
+
+    window.onload = function() {
+      updateJam();
+      loadTable();
+    };
+  </script>
+</body>
+</html>
